@@ -1,0 +1,14 @@
+
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Health & Beauty</title><link rel="stylesheet" href="styles.css"></head><body>
+<header class="header sticky"><div class="brand"><svg class="logo-svg" viewBox="0 0 100 100"><defs><linearGradient id="g1"><stop offset="0" stop-color="#ff6fa3"/><stop offset="0.6" stop-color="#ff385c"/><stop offset="1" stop-color="#7b4bff"/></linearGradient></defs><rect rx="16" width="100" height="100" fill="url(#g1)"/><text x="50%" y="58%" text-anchor="middle" fill="#fff" font-size="36">H&amp;S</text></svg><div><h1>Hush & Shop</h1><div style="font-size:12px;opacity:0.9">Shop Smart. Shop Stylish.</div></div></div><form id="globalSearchForm" onsubmit="return doGlobalSearch(event)" class="global-search"><input id="globalSearchInput" type="search" placeholder="Search products, categories..."><button type="submit" class="btn">Search</button></form><nav class="nav"><a href="index.html">Home</a><a href="deals.html">Deals</a><div class="dropdown"><button class="dropbtn">Categories</button><div class="dropdown-content"><a href="electronics.html">Electronics</a><a href="fashion.html">Fashion & Apparel</a><a href="home.html">Home & Garden</a><a href="health.html">Health & Beauty</a><a href="groceries.html">Groceries</a><a href="books.html">Books & Media</a><a href="sports.html">Sports & Outdoors</a><a href="toys.html">Toys & Hobbies</a><a href="automotive.html">Automotive</a><a href="pets.html">Pets</a></div></div><a href="cart.html">Cart</a><button id="cartToggle" class="cart-btn">🛒 <span id="cartCount">0</span></button></nav></header>
+<main class="container"><h2>Health & Beauty</h2><div class="products" id="grid"></div></main>
+<aside id="cartSidebar" class="cart-sidebar"><button id="closeSidebar" style="float:right;background:transparent;border:none;font-size:18px">✕</button><h3>Your Cart</h3><div id="cartItemsArea" style="margin-top:12px;max-height:60vh;overflow:auto"></div><div class="cart-footer"><div style="font-weight:700">Subtotal: <span id="cartSubtotal">$0.00</span></div><div style="margin-top:10px"><a href="cart.html"><button class="btn primary">View Full Cart</button></a></div></div></aside>
+<script src='products.js'></script><script src='script.js'></script><script>
+const grid = document.getElementById('grid');
+PRODUCTS.filter(function(p){ return p.category === 'Health & Beauty'; }).forEach(function(p){
+  const d = document.createElement('div');
+  d.className = 'card';
+  d.innerHTML = '<img src="'+p.image+'"><h3>'+p.name+'</h3><div style="flex:1">'+p.description+'</div><div style="display:flex;justify-content:space-between;align-items:center"><div class="price">$'+p.price.toFixed(2)+'</div><div class="actions"><button class="btn primary" onclick="addToCart('+p.id+')">Add</button></div></div>';
+  grid.appendChild(d);
+});
+</script></body></html>
