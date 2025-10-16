@@ -116,27 +116,27 @@
     <a href="index.html" class="btn">← Back to Home</a>
   </div>
 
-  <script>
-    // Retrieve and display last order from localStorage
-    const orderData = JSON.parse(localStorage.getItem('lastOrder') || '[]');
-    if (orderData.length > 0) {
-      const detailsBox = document.getElementById('orderDetails');
-      const itemsBox = document.getElementById('orderItems');
-      const totalBox = document.getElementById('orderTotal');
-      let total = 0;
+<script>
+const orderInfo = JSON.parse(localStorage.getItem('lastOrder') || '{}');
+if (orderInfo && orderInfo.cart && orderInfo.cart.length > 0) {
+  const detailsBox = document.getElementById('orderDetails');
+  const itemsBox = document.getElementById('orderItems');
+  const totalBox = document.getElementById('orderTotal');
 
-      itemsBox.innerHTML = orderData.map(item => {
-        const subtotal = item.price * item.quantity;
-        total += subtotal;
-        return `<div>${item.name} × ${item.quantity} — $${subtotal.toFixed(2)}</div>`;
-      }).join('');
+  document.querySelector('h1').textContent = `Thank you, ${orderInfo.name || 'Customer'}!`;
+  itemsBox.innerHTML = orderInfo.cart.map(item => {
+    const subtotal = item.price * item.quantity;
+    return `<div>${item.name} × ${item.quantity} — $${subtotal.toFixed(2)}</div>`;
+  }).join('');
+  totalBox.innerHTML = `
+    <div><strong>Order ID:</strong> ${orderInfo.orderId}</div>
+    <div><strong>Date:</strong> ${orderInfo.orderDate}</div>
+    <div><strong>Total:</strong> $${orderInfo.total.toFixed(2)}</div>
+  `;
+  detailsBox.style.display = 'block';
+}
+localStorage.removeItem('lastOrder');
+</script>
 
-      totalBox.textContent = `Total: $${total.toFixed(2)}`;
-      detailsBox.style.display = 'block';
-    }
-
-    // Optional: clear last order after showing summary
-    localStorage.removeItem('lastOrder');
-  </script>
 </body>
 </html>
