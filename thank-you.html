@@ -1,11 +1,142 @@
 
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thank You</title><link rel="stylesheet" href="styles.css"></head><body>
-<header class="header sticky"><div class="brand"><svg class="logo-svg" viewBox="0 0 100 100"><defs><linearGradient id="g1"><stop offset="0" stop-color="#ff6fa3"/><stop offset="0.6" stop-color="#ff385c"/><stop offset="1" stop-color="#7b4bff"/></linearGradient></defs><rect rx="16" width="100" height="100" fill="url(#g1)"/><text x="50%" y="58%" text-anchor="middle" fill="#fff" font-size="36">H&amp;S</text></svg><div><h1>Hush & Shop</h1><div style="font-size:12px;opacity:0.9">Shop Smart. Shop Stylish.</div></div></div><form id="globalSearchForm" onsubmit="return doGlobalSearch(event)" class="global-search"><input id="globalSearchInput" type="search" placeholder="Search products, categories..."><button type="submit" class="btn">Search</button></form><nav class="nav"><a href="index.html">Home</a><a href="deals.html">Deals</a><div class="dropdown"><button class="dropbtn">Categories</button><div class="dropdown-content"><a href="electronics.html">Electronics</a><a href="fashion.html">Fashion & Apparel</a><a href="home.html">Home & Garden</a><a href="health.html">Health & Beauty</a><a href="groceries.html">Groceries</a><a href="books.html">Books & Media</a><a href="sports.html">Sports & Outdoors</a><a href="toys.html">Toys & Hobbies</a><a href="automotive.html">Automotive</a><a href="pets.html">Pets</a></div></div><a href="cart.html">Cart</a><button id="cartToggle" class="cart-btn">🛒 <span id="cartCount">0</span></button></nav></header>
-<main class="container"><h2>Thank you for your order!</h2><p id="orderId" style="font-weight:700"></p><div id="summaryArea"></div><div style="margin-top:12px"><button onclick="window.print()" class="btn">Print Invoice</button> <a href="index.html"><button class="btn">Continue Shopping</button></a></div></main>
-<aside id="cartSidebar" class="cart-sidebar"><button id="closeSidebar" style="float:right;background:transparent;border:none;font-size:18px">✕</button><h3>Your Cart</h3><div id="cartItemsArea" style="margin-top:12px;max-height:60vh;overflow:auto"></div><div class="cart-footer"><div style="font-weight:700">Subtotal: <span id="cartSubtotal">$0.00</span></div><div style="margin-top:10px"><a href="cart.html"><button class="btn primary">View Full Cart</button></a></div></div></aside>
-<script>
-function genId(){ const c='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; let s='HS-'; for(let i=0;i<8;i++) s+=c.charAt(Math.floor(Math.random()*c.length)); return s; }
-let orderId = localStorage.getItem('orderId') || genId(); localStorage.setItem('orderId', orderId); document.getElementById('orderId').textContent = 'Order ID: ' + orderId;
-const last = JSON.parse(localStorage.getItem('lastOrder')||'[]'); const area = document.getElementById('summaryArea');
-if(last.length===0){ area.innerHTML='<p>No order details found.</p>'; } else { let t=0; let html='<h3>Order Summary</h3><div style="text-align:left">'; last.forEach(function(i){ t+=i.price*i.quantity; html += '<div>'+i.name+' x '+i.quantity+' - $'+(i.price*i.quantity).toFixed(2)+'</div>'; }); html += '</div><p style="font-weight:700">Total: $'+t.toFixed(2)+'</p><p>Order Date: '+new Date().toLocaleString()+'</p>'; area.innerHTML = html; localStorage.removeItem('lastOrder'); }
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Thank You – Hush & Shop</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ff6fa3 0%, #ff385c 60%, #7b4bff 100%);
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding: 1.5rem;
+    }
+    .thankyou-card {
+      background: white;
+      color: #333;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      padding: 40px 30px;
+      max-width: 480px;
+      width: 100%;
+      animation: fadeIn 0.8s ease;
+    }
+    .thankyou-card h1 {
+      color: #ff385c;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .thankyou-card p {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #ff6fa3, #ff385c, #7b4bff);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .logo svg {
+      width: 60px;
+      height: 60px;
+    }
+    .order-summary {
+      background: #fafafa;
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: left;
+      font-size: 0.95rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .order-summary strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #ff385c;
+    }
+  </style>
+</head>
+<body>
+  <div class="thankyou-card">
+    <div class="logo">
+      <svg viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="g1">
+            <stop offset="0" stop-color="#ff6fa3"/>
+            <stop offset="0.6" stop-color="#ff385c"/>
+            <stop offset="1" stop-color="#7b4bff"/>
+          </linearGradient>
+        </defs>
+        <rect rx="16" width="100" height="100" fill="url(#g1)"/>
+        <text x="50%" y="58%" text-anchor="middle" fill="#fff" font-size="36">H&amp;S</text>
+      </svg>
+      <h2>Hush & Shop</h2>
+    </div>
+
+    <h1>Thank You!</h1>
+    <p>Your order has been received and is being processed.<br>We’ll send you an update shortly.</p>
+
+    <div id="orderDetails" class="order-summary" style="display:none;">
+      <strong>Your Order:</strong>
+      <div id="orderItems"></div>
+      <div style="font-weight:600;margin-top:8px;" id="orderTotal"></div>
+    </div>
+
+    <a href="index.html" class="btn">← Back to Home</a>
+  </div>
+
+  <script>
+    // Retrieve and display last order from localStorage
+    const orderData = JSON.parse(localStorage.getItem('lastOrder') || '[]');
+    if (orderData.length > 0) {
+      const detailsBox = document.getElementById('orderDetails');
+      const itemsBox = document.getElementById('orderItems');
+      const totalBox = document.getElementById('orderTotal');
+      let total = 0;
+
+      itemsBox.innerHTML = orderData.map(item => {
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+        return `<div>${item.name} × ${item.quantity} — $${subtotal.toFixed(2)}</div>`;
+      }).join('');
+
+      totalBox.textContent = `Total: $${total.toFixed(2)}`;
+      detailsBox.style.display = 'block';
+    }
+
+    // Optional: clear last order after showing summary
+    localStorage.removeItem('lastOrder');
+  </script>
+</body>
+</html>
