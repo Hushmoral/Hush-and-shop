@@ -62,9 +62,13 @@
 <form id="checkoutForm" name="order" method="POST" data-netlify="true" action="/thank-you.html">
   <input type="hidden" name="form-name" value="order">
   <input type="hidden" name="orderSummary" id="orderSummaryField">
+  <input type="hidden" name="orderId" id="orderIdField">
+  <input type="hidden" name="orderDate" id="orderDateField">
+  <input type="hidden" name="customerName" id="customerNameField">
+  <input type="hidden" name="notify" value="true"><!-- triggers Netlify email -->
 
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-    <input name="fullName" placeholder="Full name" required>
+    <input name="fullName" id="fullName" placeholder="Full name" required>
     <input name="email" placeholder="Email" required>
     <input name="phone" placeholder="Phone" required>
     <input name="address" placeholder="Address" required>
@@ -83,6 +87,7 @@
 
   <button type="submit" class="btn primary">Place Order</button>
 </form>
+
 
 </main>
 
@@ -127,6 +132,30 @@ document.getElementById('checkoutForm').addEventListener('submit', function() {
   localStorage.removeItem('cart');
 });
 </script>
+  <script>
+document.getElementById('checkoutForm').addEventListener('submit', function () {
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  let total = 0;
+  const summary = cart.map(i => {
+    total += i.price * i.quantity;
+    return `${i.name} × ${i.quantity} — $${(i.price * i.quantity).toFixed(2)}`;
+  }).join('\n') + `\n\nTotal: $${total.toFixed(2)}`;
+
+  const orderId = 'HS-' + Date.now().toString(36).toUpperCase();
+  const orderDate = new Date().toLocaleString();
+  const name = document.getElementById('fullName').value.trim();
+
+  document.getElementById('orderSummaryField').value = summary;
+  document.getElementById('orderIdField').value = orderId;
+  document.getElementById('orderDateField').value = orderDate;
+  document.getElementById('customerNameField').value = name;
+
+  const orderInfo = { cart, total, orderId, orderDate, name };
+  localStorage.setItem('lastOrder', JSON.stringify(orderInfo));
+  localStorage.removeItem('cart');
+});
+</script>
+
   <form name="order" data-netlify="true" netlify-honeypot="bot-field" hidden>
   <input type="text" name="fullName">
   <input type="email" name="email">
