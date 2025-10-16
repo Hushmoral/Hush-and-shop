@@ -59,30 +59,31 @@
   <div id="orderSummary"></div>
 
   <!-- ✅ Netlify form setup -->
-  <form id="checkoutForm" name="order" method="POST" data-netlify="true">
-    <input type="hidden" name="form-name" value="order">
-    <input type="hidden" name="orderSummary" id="orderSummaryField">
+<form id="checkoutForm" name="order" method="POST" data-netlify="true" action="/thank-you.html">
+  <input type="hidden" name="form-name" value="order">
+  <input type="hidden" name="orderSummary" id="orderSummaryField">
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <input name="fullName" placeholder="Full name" required>
-      <input name="email" placeholder="Email" type="email" required>
-      <input name="phone" placeholder="Phone" required>
-      <input name="address" placeholder="Address" required>
-      <input name="city" placeholder="City" required>
-      <input name="state" placeholder="State" required>
-      <input name="zip" placeholder="ZIP" required>
-      <input name="country" placeholder="Country" required>
-    </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <input name="fullName" placeholder="Full name" required>
+    <input name="email" placeholder="Email" required>
+    <input name="phone" placeholder="Phone" required>
+    <input name="address" placeholder="Address" required>
+    <input name="city" placeholder="City" required>
+    <input name="state" placeholder="State" required>
+    <input name="zip" placeholder="ZIP" required>
+    <input name="country" placeholder="Country" required>
+  </div>
 
-    <h3>Payment (demo)</h3>
-    <input name="cardNumber" placeholder="Card number">
-    <div style="display:flex;gap:8px">
-      <input name="expiry" placeholder="MM/YY">
-      <input name="cvv" placeholder="CVV">
-    </div>
+  <h3>Payment (demo)</h3>
+  <input name="cardNumber" placeholder="Card number">
+  <div style="display:flex;gap:8px">
+    <input name="expiry" placeholder="MM/YY">
+    <input name="cvv" placeholder="CVV">
+  </div>
 
-    <button type="submit" class="btn primary">Place Order</button>
-  </form>
+  <button type="submit" class="btn primary">Place Order</button>
+</form>
+
 </main>
 
 <aside id="cartSidebar" class="cart-sidebar">
